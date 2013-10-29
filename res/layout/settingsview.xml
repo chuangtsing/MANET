@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/setup_layout_category_general"
+        android:key="generalprefs">
+     	<EditTextPreference
+			android:key="uidpref"  
+			android:title="@string/setup_layout_uid"  
+			android:summary="@string/setup_layout_uid_summary" 
+			android:dialogTitle="@string/setup_layout_uid_dialog_title" /> 
+    </PreferenceCategory>
+	<PreferenceCategory android:title="@string/setup_layout_category_wifi"
+		android:key="wifiprefs">
+		<ListPreference  
+			android:key="encalgorithmpref"  
+			android:title="@string/setup_layout_encryption_algorithm"  
+			android:summary="@string/setup_layout_encryption_algorithm_summary"
+			android:dialogTitle="@string/setup_layout_encryption_algorithm_dialog_title" /> 
+		<ListPreference  
+			android:key="encsetuppref"  
+			android:title="@string/setup_layout_encryption_setup"  
+			android:summary="@string/setup_layout_encryption_setup_summary"
+			android:dialogTitle="@string/setup_layout_encryption_setup_dialog_title" /> 			
+		<EditTextPreference
+			android:key="passwordpref"  
+			android:title="@string/setup_layout_password"  
+			android:summary="@string/setup_layout_password_summary_wpa" 
+			android:dialogTitle="@string/setup_layout_password_dialog_title" /> 
+		<EditTextPreference  
+			android:key="ssidpref"  
+			android:title="@string/setup_layout_ssid"  
+			android:summary="@string/setup_layout_ssid_summary"  
+			android:dialogTitle="@string/setup_layout_ssid_dialog_title" 
+			android:maxLength="15"  
+			android:dialogMessage="@string/setup_layout_ssid_dialog_message"
+			android:defaultValue="AndroidAdhoc" />      
+		<ListPreference  
+			android:key="channelpref"  
+			android:title="@string/setup_layout_channel"  
+			android:summary="@string/setup_layout_channel_summary"  
+			android:entries="@array/channelnames"  
+			android:entryValues="@array/channelvalues"  
+			android:dialogTitle="@string/setup_layout_channel_dialog_title"
+			android:defaultValue="1" /> 
+		<ListPreference  
+			android:key="txpowerpref"  
+			android:title="@string/setup_layout_txpower"  
+			android:summary="@string/setup_layout_txpower_summary"  
+			android:dialogTitle="@string/setup_layout_txpower_dialog_title" />
+		<ListPreference  
+            android:key="interfacepref"  
+            android:title="@string/setup_layout_interface"  
+            android:summary="@string/setup_layout_interface_summary"
+            android:dialogTitle="@string/setup_layout_interface_dialog_title" /> 
+	</PreferenceCategory>
+    <PreferenceCategory android:title="@string/setup_layout_category_bluetooth"
+        android:key="btprefs">
+        <CheckBoxPreference
+        	android:key="bluetoothonpref"
+            android:title="@string/setup_layout_usebluetooth"
+            android:summary="@string/setup_layout_usebluetooth_summary" />
+        <CheckBoxPreference
+            android:key="bluetoothkeepwifipref"
+            android:dependency="bluetoothonpref"
+            android:title="@string/setup_layout_dontdisablewifi"
+            android:summary="@string/setup_layout_dontdisablewifi_summary" />
+        <CheckBoxPreference
+			android:key="bluetoothdiscoverablepref"
+            android:dependency="bluetoothonpref"
+            android:title="@string/setup_layout_discoverable"
+            android:summary="@string/setup_layout_discoverable_summary" />               
+    </PreferenceCategory>
+	<PreferenceCategory android:title="@string/setup_layout_category_ip">
+	    <EditTextPreference
+	        android:key="ippref"  
+            android:title="@string/setup_layout_ip"
+            android:summary="@string/setup_layout_ip_summary"
+            android:dialogTitle="@string/setup_layout_ip_dialog_title"
+            android:inputType="phone" />
+	   	<EditTextPreference
+	        android:key="dnspref"  
+            android:title="@string/setup_layout_dns"
+            android:summary="@string/setup_layout_dns_summary"
+            android:dialogTitle="@string/setup_layout_dns_dialog_title"
+            android:inputType="phone" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/setup_layout_category_routing"
+	    android:key="routingprefs">
+	    <ListPreference  
+			android:key="routingprotocolpref"  
+			android:title="@string/setup_layout_routing_protocol"  
+			android:summary="@string/setup_layout_routing_protocol_summary"  
+			android:dialogTitle="@string/setup_layout_routing_protocol_dialog_title" />
+        <PreferenceScreen
+            android:key="ignorepref" 
+            android:title="@string/setup_layout_ignore"
+            android:summary="@string/setup_layout_ignore_summary" >
+            <intent android:action="android.intent.action.EDIT_IGNORE_LIST_ACTION" />
+        </PreferenceScreen>
+        <ListPreference  
+			android:key="gatewaypref"  
+			android:title="@string/setup_layout_gateway"
+			android:summary="@string/setup_layout_gateway_summary"
+            android:dialogTitle="@string/setup_layout_gateway_dialog_title" /> 
+    </PreferenceCategory>
+	<PreferenceCategory android:title="@string/setup_layout_category_misc">
+	     <CheckBoxPreference
+        	android:key="screenonpref"
+            android:title="@string/setup_layout_screenon"
+            android:summary="@string/setup_layout_screenon_summary" />			 
+		 <ListPreference  
+			android:key="batterytemppref"  
+			android:title="@string/setup_layout_battery"  
+			android:summary="@string/setup_layout_battery_summary"  
+			android:entries="@array/batterytempnames"  
+			android:entryValues="@array/batterytempvalues"  
+			android:defaultValue="fahrenheit"
+			android:dialogTitle="@string/setup_layout_battery" />		
+	</PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.span"
+    android:versionCode="4"
+    android:versionName="1.0" >
+    
+    <uses-sdk android:minSdkVersion="9" />
+    
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />  
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_ACTION_SCREEN_OFF" />
+    <uses-permission android:name="android.permission.RECEIVE_ACTION_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="org.span.permission.MANET" />
+    
+    <!-- NOTE: receiver and service tags must be embedded within application tag -->
+    <application android:name="org.span.manager.ManetManagerApp"
+        android:icon="@drawable/service_icon_64" 
+        android:logo="@drawable/service_icon_64" 
+        android:label="@string/global_app_name"
+        android:debuggable="true">
+        
+        <activity android:name=".manager.MainActivity"
+            android:label="@string/global_app_name" 
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+			<intent-filter>
+        		<action android:name="android.intent.action.VIEW" />
+       			<category android:name="android.intent.category.DEFAULT" />
+       			<category android:name="android.intent.category.BROWSABLE" />
+       			<data android:scheme="file" />
+        		<data android:mimeType="*/*" />
+        		<data android:pathPattern=".*\\.conf" />
+        		<data android:host="*" />
+    		</intent-filter>
+
+        </activity>
+       
+        <!--
+        <activity android:name=".manager.LogActivity" 
+            android:screenOrientation="portrait" 
+            android:launchMode="singleTask"/>
+        -->    
+        
+        <activity android:name=".manager.ChangeSettingsActivity" 
+            android:launchMode="singleTask"/> 
+        
+        <activity android:name=".manager.ViewLogActivity"
+            android:label="@string/global_app_view_log_name"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_LOG_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".manager.SendMessageActivity"
+            android:label="@string/global_app_send_message_name"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MESSAGE_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".manager.ViewMessageActivity"
+            android:label="@string/global_app_view_message_name"
+            android:launchMode="standard"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_MESSAGE_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".manager.ViewRoutingInfoActivity"
+            android:label="@string/global_app_view_routing_info_name"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_ROUTING_INFO_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+                
+        <activity android:name="org.span.manager.EditIgnoreListActivity"
+            android:label="@string/global_app_edit_ignore_list_name"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT_IGNORE_LIST_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="org.span.manager.ShareActivity"
+            android:label="@string/global_app_share_name"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.SHARE_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <service android:name=".manager.MessageService" android:enabled="true" />
+    
+        <!-- NOTE: run service in a separate process (instead of the standard one for its .apk) to prevent UI issues -->
+        <service android:name="org.span.service.core.ManetService"
+            android:process="org.span.service.core.ManetService"
+			android:exported="true"
+			android:enabled="true" />
+        
+    </application>
+        
+</manifest>
