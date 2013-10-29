@@ -287,9 +287,9 @@ public class ChangeSettingsActivity extends PreferenceActivity implements OnShar
         dnsServerEditTextPref.setText(manetcfg.getDnsServer());        
         
         // data server
-//        EditTextPreference dataServerEditTextPref = (EditTextPreference)findPreference("serverpref");
-//        Validation.setupIpAddressValidator(dataServerEditTextPref);
-//        dnsServerEditTextPref.setText(manetcfg.getDataServer());   
+        EditTextPreference dataServerEditTextPref = (EditTextPreference)findPreference("serverpref");
+        Validation.setupIpAddressValidator(dataServerEditTextPref);
+        dataServerEditTextPref.setText(manetcfg.getDataServer());   
         
         // routing protocol
         String currRoutingProtocol = manetcfg.getRoutingProtocol();
@@ -417,10 +417,10 @@ public class ChangeSettingsActivity extends PreferenceActivity implements OnShar
 	    	String dnsServer = sharedPreferences.getString("dnspref", ManetConfig.DNS_SERVER_DEFAULT);
 	    	manetcfg.setDnsServer(dnsServer);
     	}
-//    	else if (key.equals("serverpref")) {
-//	    	String dataServer = sharedPreferences.getString("serverpref", ManetConfig.DATA_SERVER_DEFAULT);
-//	    	manetcfg.setDataServer(dataServer);
- //   	}
+    	else if (key.equals("serverpref")) {
+	    	String dataServer = sharedPreferences.getString("serverpref", ManetConfig.DATA_SERVER_DEFAULT);
+	    	manetcfg.setDataServer(dataServer);
+    	}
     	else if (key.equals("bluetoothonpref")) {
     		final Boolean bluetoothOn = sharedPreferences.getBoolean("bluetoothonpref", 
     				ManetConfig.ADHOC_MODE_DEFAULT == AdhocModeEnum.BLUETOOTH);

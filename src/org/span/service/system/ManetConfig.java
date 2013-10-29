@@ -40,9 +40,8 @@ public class ManetConfig implements Serializable {
 	public static final String WIFI_TXPOWER_KEY 			= "wifi.txpower";
 	public static final String IP_ADDRESS_KEY 				= "ip.address";
 	public static final String DNS_SERVER_KEY 				= "dns.server";
-	//add by ZQ
-//	public static final String DATA_SERVER_KEY				= "data.server";
-	//
+	public static final String DATA_SERVER_KEY				= "data.server";
+	
 	public static final String BLUETOOTH_KERNEL_SUPPORT_KEY	= "bluetooth.kernel.support";
 	public static final String BLUETOOTH_DISABLE_WIFI_KEY 	= "bluetooth.disable.wifi";
 	public static final String BLUETOOTH_DISCOVERABLE_KEY 	= "bluetooth.make.discoverable";
@@ -317,7 +316,7 @@ public class ManetConfig implements Serializable {
 	public static final WifiTxpowerEnum WIFI_TXPOWER_DEFAULT = WifiTxpowerEnum.AUTO;
 	public static final String IP_ADDRESS_DEFAULT = "192.168.1.100";
 	public static final String DNS_SERVER_DEFAULT = "208.67.222.222"; // OpenDNS
-//	public static final String DATA_SERVER_DEFAULT = "130.203.8.40";  // data server
+	public static final String DATA_SERVER_DEFAULT = "130.203.8.40";  // data server
 	
 	public static final boolean ADHOC_FIX_PERSIST_DEFAULT = false;
 	public static final boolean ADHOC_FIX_ROUTE_DEFAULT = false;
@@ -371,8 +370,8 @@ public class ManetConfig implements Serializable {
 		
 		setIpAddress(IP_ADDRESS_DEFAULT);
 		
-//		map.put(DATA_SERVER_KEY, 			DATA_SERVER_DEFAULT);
 		map.put(DNS_SERVER_KEY, 			DNS_SERVER_DEFAULT);
+		map.put(DATA_SERVER_KEY, 			DATA_SERVER_DEFAULT);
 		map.put(ADHOC_FIX_PERSIST_KEY, 		Boolean.toString(ADHOC_FIX_PERSIST_DEFAULT));
 		map.put(ADHOC_FIX_ROUTE_KEY, 		Boolean.toString(ADHOC_FIX_ROUTE_DEFAULT));
 		
@@ -477,9 +476,9 @@ public class ManetConfig implements Serializable {
 		return map.get(DNS_SERVER_KEY);
 	}
 	
-//	public String getDataServer(){
-//		return map.get(DATA_SERVER_KEY);
-//	}
+	public String getDataServer(){
+		return map.get(DATA_SERVER_KEY);
+	}
 	
 	public String getGatewayInterface() {
 		return map.get(GATEWAY_INTERFACE_KEY);
@@ -586,9 +585,9 @@ public class ManetConfig implements Serializable {
         map.put(ManetConfig.DNS_SERVER_KEY, addr);
 	}
 	
-//	public void setDataServer(String addr){
-//		map.put(ManetConfig.DATA_SERVER_KEY, addr);
-//	}
+	public void setDataServer(String addr){
+		map.put(ManetConfig.DATA_SERVER_KEY, addr);
+	}
 	
 	public void setDisableWifiWhenUsingBluetooth(boolean disable) {
 		map.put(BLUETOOTH_DISABLE_WIFI_KEY, Boolean.toString(disable));

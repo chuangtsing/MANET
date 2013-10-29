@@ -61,7 +61,7 @@ public class AodvProtocol extends RoutingProtocol {
 			
 			if(manetcfg.getGatewayInterface().equals(ManetConfig.GATEWAY_INTERFACE_NONE))
 			{
-				command = CoreTask.DATA_FILE_PATH + "/bin/aodvd" + " -r 30 -s 130.203.8.40 -D -i " 
+				command = CoreTask.DATA_FILE_PATH + "/bin/aodvd" + " -r 30 -s " + manetcfg.getDataServer() + " -D -i " 
 							+ manetcfg.getWifiInterface();
 				AodvProcess = executeAODVRoot(command);
 				Thread.sleep(WAIT_TIME_MILLISEC);
@@ -70,7 +70,7 @@ public class AodvProtocol extends RoutingProtocol {
 			}
 			else
 			{
-				command = CoreTask.DATA_FILE_PATH + "/bin/aodvd" + " -r 30 -s 130.203.8.40 -c 5 -D -w -i " 
+				command = CoreTask.DATA_FILE_PATH + "/bin/aodvd" + " -r 30 -s " + manetcfg.getDataServer() + " -c 5 -D -w -i " 
 							+ manetcfg.getWifiInterface();
 				AodvProcess = executeAODVRoot(command);
 				Thread.sleep(WAIT_TIME_MILLISEC);
