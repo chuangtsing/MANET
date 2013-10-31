@@ -24,6 +24,13 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:inputType="phone" />
+            
+        <CheckBox
+            android:id="@+id/cbServer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Send through server if the destination cannot be reached locally." />
         
 	    <TextView android:text="Message:" 
 	    	android:layout_width="fill_parent"

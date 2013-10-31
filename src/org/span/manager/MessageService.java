@@ -6,6 +6,10 @@ package org.span.manager;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 import org.span.R;
 
@@ -34,6 +38,8 @@ public class MessageService extends Service {
     // one thread for all activities
     private static Thread msgListenerThread = null;
     
+    private static Thread msgCheckerThread = null;
+    
     private int notificationId = 0;
     
     @Override 
@@ -44,11 +50,17 @@ public class MessageService extends Service {
     @Override    
     public int onStartCommand(Intent intent, int flags, int startId) {
     	
-    	if (msgListenerThread == null) {	
+    	if (msgListenerThread == null) 
+    	{	
 	    	msgListenerThread = new MessageListenerThread();
 	    	msgListenerThread.start();
     	}
     	
+    	if (msgCheckerThread == null)
+    	{
+    		msgCheckerThread = new MessageCheckerThread();
+    		msgCheckerThread.start();
+    	}
     	return START_STICKY; // run until explicitly stopped    
 	}
     
@@ -108,28 +120,84 @@ public class MessageService extends Service {
     
     private class MessageListenerThread extends Thread {
     	
+    	private boolean running = false;
+    	
     	public void run() {
     		
-    		try {
-    			// bind to local machine; will receive broadcasts and directed messages
-    			// will most likely bind to 127.0.0.1 (localhost)
-    			DatagramSocket socket = new DatagramSocket(MESSAGE_PORT);
-    			
-    			byte[] buff = new byte[MAX_MESSAGE_LENGTH];
-				DatagramPacket packet = new DatagramPacket(buff, buff.length);
-				
-				while (true) {
-					try {
-						// address Android issue where old packet lengths are erroneously 
-						// carried over between packet reuse
-						packet.setLength(buff.length); 
+    		running = true;
+    		ServerSocket serverSocket = null;
+    		
+	    	try {
+	    			serverSocket = new ServerSocket(MESSAGE_PORT);	
+	    	}
+	    	catch (IOException e)
+			{
+                e.printStackTrace();
+            } 
+	    	
+	    	Socket client = null;
+	    	
+	    	while(true){
+	    		try{
+	    				client = serverSocket.accept();
+	    		}
+	    		catch (IOException e)
+				{
+	                e.printStackTrace();
+	            }
+	    		
+	    		Thread t = new Thread(new ReceiveMessage(client, false));
+	    	    t.start();    		
+	    	}
+    	}
+    };
+    
+    
+    private class ReceiveMessage implements Runnable {
+    	
+        private Socket socket;
+        private boolean fromServer;
+        
+        ReceiveMessage(Socket socket, boolean fromServer ) {
+            this.socket = socket;
+            this.fromServer = fromServer;
+        }
+
+        public void run() {
+	        BufferedReader in = null;
+	        PrintWriter out = null;
+	        try {
+	            try {
+	                /* obtain an input stream to this client ... */
+	                in = new BufferedReader(new InputStreamReader(
+	                		socket.getInputStream()));
+	                /* ... and an output stream to the same client */
+	                out = new PrintWriter(new BufferedWriter(
+	                		new OutputStreamWriter(socket.getOutputStream())), true);
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	                socket.close();
+	                return;
+	            }
+	
+	            String msg;
+	            String messages = "";
+	            try {
+	                while ((msg = in.readLine()) != null) {
+	                	messages += msg + "\n";
+	                }
+	                
+	                if (messages != "")
+					{
+						String from = messages.substring(0, messages.indexOf("\n"));
 						
-						socket.receive(packet); // blocking
+						if(fromServer){
+							from += " through server ";
+						}
+							
+						String content = messages.substring(messages.indexOf("\n")+1);
 						
-						String msg = new String(packet.getData(), 0, packet.getLength());
-						String from = msg.substring(0, msg.indexOf("\n"));
-						String content = msg.substring(msg.indexOf("\n")+1);
-						
+						// from = client.getRemoteSocketAddress().toString();
 						String tickerStr = "New message";
 						
 				    	Bundle extras = new Bundle();
@@ -137,13 +205,46 @@ public class MessageService extends Service {
 				    	extras.putString(MESSAGE_CONTENT_KEY, content);
 						
 						showNotification(tickerStr, extras);
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
-				}
-			} catch (Exception e) {
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	            finally {
+	            	if(socket != null)
+	            		socket.close();
+	            }
+	        } catch (IOException e) {
 				e.printStackTrace();
 			}
-    	}
+        }
     }
+
+    
+    private class MessageCheckerThread extends Thread {
+    	
+    	public void run() 
+    	{
+    		while(true)
+    		{
+    			try {
+					sleep(1000*60*1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+    			
+	    		Socket socket = null;
+	    		try {
+	    			ManetManagerApp app = ManetManagerApp.getInstance();
+	    			InetAddress serverAddr = InetAddress.getByName(app.manetcfg.getDataServer());
+	    			socket = new Socket(serverAddr, MESSAGE_PORT);
+	    				
+	    			Thread t = new Thread(new ReceiveMessage(socket, true));
+	    	    	t.start();   
+	    		} 
+	    		catch (Exception e) {
+	    	            e.printStackTrace();
+	    		}		
+    		}
+    	}
+    };
 }

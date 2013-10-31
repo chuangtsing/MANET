@@ -67,6 +67,10 @@ public class ManetManagerApp extends Application implements ManetObserver {
 	// singleton
 	private static ManetManagerApp instance = null;
 	
+	public static Context getContext() {
+	    return instance;
+	}
+	
 	public static ManetManagerApp getInstance() {
 		return instance;
 	}
